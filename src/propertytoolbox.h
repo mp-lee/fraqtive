@@ -17,7 +17,6 @@ class FractalModel;
 class ParametersPage;
 class ColorSettingsPage;
 class AdvancedSettingsPage;
-class AnimationPage;
 
 class PropertyToolBox : public QToolBox
 {
@@ -38,7 +37,6 @@ private:
     ParametersPage* m_parameters;
     ColorSettingsPage* m_colorSettings;
     AdvancedSettingsPage* m_advancedSettings;
-    AnimationPage* m_animationPage;
 };
 
 #endif

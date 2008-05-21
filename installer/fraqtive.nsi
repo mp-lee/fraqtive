@@ -1,4 +1,4 @@
-!define VERSION "0.4.3"
+!define VERSION "0.4.2"
 
 !define SRCDIR ".."
 !define BUILDDIR "..\release"
@@ -65,13 +65,6 @@ Section
     File "${QTDIR}\bin\QtCore4.dll"
     File "${QTDIR}\bin\QtGui4.dll"
     File "${QTDIR}\bin\QtOpenGL4.dll"
-
-    SetOutPath "$INSTDIR\bin\imageformats"
-
-    Delete "$INSTDIR\bin\imageformats\*.*"
-
-    File "${QTDIR}\plugins\imageformats\qjpeg4.dll"
-    File "${QTDIR}\plugins\imageformats\qtiff4.dll"
 
     SetOutPath "$TEMP"
 

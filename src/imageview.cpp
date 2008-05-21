@@ -138,13 +138,7 @@ static const int GradientSize = 16384;
 
 void ImageView::drawImage( const FractalData* data, const QRect& region )
 {
-    ColorMapping mapping = m_colorMapping;
-    double offset = mapping.offset() + m_animationState.scrolling();
-    if ( offset > 1.0 )
-        offset -= 1.0;
-    mapping.setOffset( offset );
-
-    DataFunctions::ColorMapper mapper( m_gradientCache, GradientSize, m_backgroundColor.rgb(), mapping );
+    DataFunctions::ColorMapper mapper( m_gradientCache, GradientSize, m_backgroundColor.rgb(), m_colorMapping );
     DataFunctions::drawImage( m_image, data, region, mapper, m_settings.antiAliasing() );
 }
 
@@ -189,14 +183,6 @@ void ImageView::setViewSettings( const ViewSettings& settings )
     updateImage();
 }
 
-void ImageView::setAnimationState( const AnimationState& state )
-{
-    if ( m_animationState.scrolling() != state.scrolling() ) {
-        m_animationState = state;
-        updateImage();
-    }
-}
-
 void ImageView::updateGradient()
 {
     if ( !m_gradientCache )
@@ -222,7 +208,11 @@ void ImageView::updateImage()
 
     const FractalData* data = m_presenter->fractalData();
 
-    initialUpdate( data );
+    if ( m_image.size() != data->size() - QSize( 2, 2 ) )
+        return;
+
+    m_updatedRegion = QRect();
+    partialUpdate( data );
 }
 
 void ImageView::resizeEvent( QResizeEvent* e )
@@ -418,7 +408,7 @@ void ImageView::wheelEvent( QWheelEvent* e )
 
     switch ( mode ) {
         case ZoomPoint: {
-            double zoom = pow( 10.0, -delta / zoomFactor );
+            double zoom = pow( 10.0, delta / zoomFactor );
             matrix.translate( e->pos().x(), e->pos().y() );
             matrix.scale( zoom, zoom );
             matrix.translate( -e->pos().x(), -e->pos().y() );
@@ -426,7 +416,7 @@ void ImageView::wheelEvent( QWheelEvent* e )
         }
 
         case ZoomCenter: {
-            double zoom = pow( 10.0, -delta / zoomFactor );
+            double zoom = pow( 10.0, delta / zoomFactor );
             matrix.translate( center.x(), center.y() );
             matrix.scale( zoom, zoom );
             matrix.translate( -center.x(), -center.y() );
@@ -434,7 +424,7 @@ void ImageView::wheelEvent( QWheelEvent* e )
         }
 
         case RotateCenter: {
-            double angle = -delta / rotateFactor;
+            double angle = delta / rotateFactor;
             matrix.translate( center.x(), center.y() );
             matrix.rotate( angle );
             matrix.translate( -center.x(), -center.y() );

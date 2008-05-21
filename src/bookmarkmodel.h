@@ -66,7 +66,7 @@ private:
     mutable QMutex m_mutex;
 
     QStringList m_keys;
-    QMap<QString, QImage> m_images;
+    QMap<QString, QPixmap> m_pixmaps;
 
     bool m_enabled;
     QStringList m_queue;

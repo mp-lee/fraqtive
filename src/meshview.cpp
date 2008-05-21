@@ -175,13 +175,6 @@ void MeshView::setViewSettings( const ViewSettings& settings )
     updateGL();
 }
 
-void MeshView::setAnimationState( const AnimationState& state )
-{
-    m_animationState = state;
-
-    updateGL();
-}
-
 void MeshView::initializeGL()
 {
     glEnable( GL_DEPTH_TEST );
@@ -260,28 +253,23 @@ void MeshView::paintGL()
         m_textureDirty = false;
     }
 
-    double offset = m_colorMapping.offset() + m_animationState.scrolling();
-    if ( offset > 1.0 )
-        offset -= 1.0;
-    double scale = m_colorMapping.scale();
-
     glMatrixMode( GL_TEXTURE );
     glLoadIdentity();
 
     if ( m_colorMapping.isMirrored() && hasMirroredRepeat() ) {
         if ( m_colorMapping.isReversed() )
-            glTranslated( offset + 1.0, 0.0, 0.0 );
+            glTranslated( m_colorMapping.offset() + 1.0, 0.0, 0.0 );
         else
-            glTranslated( offset, 0.0, 0.0 );
-        glScaled( scale, 1.0, 1.0 );
+            glTranslated( m_colorMapping.offset(), 0.0, 0.0 );
+        glScaled( m_colorMapping.scale(), 1.0, 1.0 );
 
         glTexParameteri( GL_TEXTURE_1D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT_ARB );
     } else {
-        glTranslated( offset, 0.0, 0.0 );
+        glTranslated( m_colorMapping.offset(), 0.0, 0.0 );
         if ( m_colorMapping.isReversed() )
-            glScaled( -scale, 1.0, 1.0 );
+            glScaled( -m_colorMapping.scale(), 1.0, 1.0 );
         else
-            glScaled( scale, 1.0, 1.0 );
+            glScaled( m_colorMapping.scale(), 1.0, 1.0 );
 
         glTexParameteri( GL_TEXTURE_1D, GL_TEXTURE_WRAP_S, GL_REPEAT );
     }
@@ -299,13 +287,11 @@ void MeshView::paintGL()
     glLoadIdentity();
     glFrustum( -fx, fx, -fy, fy, NearClipping, FarClipping );
 
-    double rotation = m_rotation - m_animationState.rotation() * 360.0;
-
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity();
     glTranslated( 0.0, 0.0, -CameraDistance );
     glRotated( m_angle, 1.0, 0.0, 0.0 );
-    glRotated( rotation, 0.0, 0.0, 1.0 );
+    glRotated( m_rotation, 0.0, 0.0, 1.0 );
     glScaled( 1.0, 1.0, m_settings.heightScale() );
     glTranslated( 0.0, 0.0, m_averageHeight );
 
@@ -463,7 +449,7 @@ void MeshView::mouseMoveEvent( QMouseEvent* e )
         }
 
         case ZoomInOut: {
-            m_presenter->adjustCameraZoom( -0.02 * ( e->pos().y() - m_lastPos.y() ) );
+            m_presenter->adjustCameraZoom( 0.02 * ( e->pos().y() - m_lastPos.y() ) );
             break;
         }
     }

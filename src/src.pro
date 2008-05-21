@@ -8,7 +8,6 @@ QT += opengl
 HEADERS   += abstractjobprovider.h \
              abstractview.h \
              advancedsettingspage.h \
-             animationpage.h \
              bookmarklistview.h \
              bookmarkmodel.h \
              colorsettingspage.h \
@@ -47,7 +46,6 @@ HEADERS   += abstractjobprovider.h \
              viewcontainer.h
 
 SOURCES   += advancedsettingspage.cpp \
-             animationpage.cpp \
              bookmarklistview.cpp \
              bookmarkmodel.cpp \
              colorsettingspage.cpp \
@@ -86,7 +84,6 @@ SOURCES   += advancedsettingspage.cpp \
              viewcontainer.cpp
 
 FORMS     += advancedsettingspage.ui \
-             animationpage.ui \
              colorsettingspage.ui \
              fractaltypedialog.ui \
              fractaltypewidget.ui \

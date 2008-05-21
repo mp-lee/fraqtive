@@ -49,7 +49,6 @@ void FractalPresenter::setView( AbstractView* view )
     if ( m_model ) {
         m_view->setColorSettings( m_model->gradient(), m_model->backgroundColor(), m_model->colorMapping() );
         m_view->setViewSettings( m_model->viewSettings() );
-        m_view->setAnimationState( m_model->animationState() );
     }
 }
 
@@ -145,11 +144,6 @@ void FractalPresenter::setViewSettings( const ViewSettings& settings )
     m_view->setViewSettings( settings );
 }
 
-void FractalPresenter::setAnimationState( const AnimationState& state )
-{
-    m_view->setAnimationState( state );
-}
-
 const FractalData* FractalPresenter::fractalData()
 {
     m_generator->updateData( &m_data );
@@ -163,10 +157,7 @@ int FractalPresenter::maximumIterations() const
 
 void FractalPresenter::setResolution( const QSize& resolution )
 {
-    if ( m_resolution != resolution ) {
-        m_resolution = resolution;
-        m_generator->setResolution( resolution );
-    }
+    m_generator->setResolution( resolution );
 }
 
 void FractalPresenter::setHoveringPoint( const QPointF& point )
@@ -214,7 +205,7 @@ void FractalPresenter::adjustCameraZoom( double delta )
 {
     ViewSettings settings = m_model->viewSettings();
 
-    double zoom = qBound( 10.0, settings.cameraZoom() + 3.5 * delta, 45.0 );
+    double zoom = qBound( 10.0, settings.cameraZoom() - 3.5 * delta, 45.0 );
 
     settings.setCameraZoom( zoom );
     m_model->setViewSettings( settings );
@@ -242,9 +233,10 @@ void FractalPresenter::customEvent( QEvent* e )
 
 QMatrix FractalPresenter::matrixFromPosition( const Position& position )
 {
-    QPointF center( m_resolution.width() / 2.0, m_resolution.height() / 2.0 );
+    QSize resolution = m_data.size();
+    QPointF center( resolution.width() / 2.0, resolution.height() / 2.0 );
 
-    double scale = pow( 10.0, -position.zoomFactor() ) / m_resolution.height();
+    double scale = pow( 10.0, -position.zoomFactor() ) / resolution.height();
 
     QMatrix matrix;
     matrix.translate( position.center().x(), position.center().y() );
@@ -257,9 +249,10 @@ QMatrix FractalPresenter::matrixFromPosition( const Position& position )
 
 Position FractalPresenter::positionFromMatrix( const QMatrix& matrix )
 {
-    QPointF center( m_resolution.width() / 2.0, m_resolution.height() / 2.0 );
+    QSize resolution = m_data.size();
+    QPointF center( resolution.width() / 2.0, resolution.height() / 2.0 );
 
-    QLineF line( center, QPointF( center.x() + m_resolution.height(), center.y() ) );
+    QLineF line( center, QPointF( center.x() + resolution.height(), center.y() ) );
     QLineF mapped = matrix.map( line );
 
     Position position;

@@ -13,11 +13,8 @@
 
 #include <QObject>
 #include <QColor>
-#include <QTime>
 
 #include "datastructures.h"
-
-class QTimer;
 
 class FractalPresenter;
 
@@ -109,11 +106,6 @@ public:
     void setViewMode( ViewMode mode );
     ViewMode viewMode() const { return m_viewMode; }
 
-    void setAnimationSettings( const AnimationSettings& settings );
-    AnimationSettings animationSettings() const { return m_animationSettings; }
-
-    AnimationState animationState() const { return m_animationState; }
-
 signals:
     void fractalTypeChanged();
     void positionChanged();
@@ -131,16 +123,9 @@ signals:
 
     void viewModeChanged();
 
-    void animationSettingsChanged();
-
-private slots:
-    void animate();
-
 private:
     void storeParameters();
     void setParametersInternal( const FractalType& type, const Position& position );
-
-    void updateTimer();
 
 private:
     struct Navigation
@@ -177,12 +162,6 @@ private:
     ViewSettings m_viewSettings;
 
     ViewMode m_viewMode;
-
-    AnimationSettings m_animationSettings;
-    AnimationState m_animationState;
-
-    QTimer* m_timer;
-    QTime m_time;
 };
 
 #endif
