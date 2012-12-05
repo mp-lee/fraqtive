@@ -1,0 +1,11 @@
+<RCC>
+    <qresource>
+        <file>tutorial/advanced.html</file>
+        <file>tutorial/color.html</file>
+        <file>tutorial/images.html</file>
+        <file>tutorial/index.html</file>
+        <file>tutorial/navigation.html</file>
+        <file>tutorial/style.css</file>
+        <file>tutorial/type.html</file>
+    </qresource>
+</RCC>
