@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FraqtiveMainWindow</class>
+ <widget class="QMainWindow" name="FraqtiveMainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>880</width>
+    <height>650</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Fraqtive</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QVBoxLayout">
+    <property name="margin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="ViewContainer" name="mainContainer" native="true"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QDockWidget" name="dockProperties">
+   <property name="windowTitle">
+    <string>Properties</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockPropertiesContents">
+    <layout class="QVBoxLayout">
+     <property name="margin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="PropertyToolBox" name="propertyToolBox" native="true"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dockPreview">
+   <property name="windowTitle">
+    <string>Julia Preview</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockPreviewContents">
+    <layout class="QVBoxLayout">
+     <property name="margin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="ViewContainer" name="previewContainer" native="true"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ViewContainer</class>
+   <extends>QWidget</extends>
+   <header>viewcontainer.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>PropertyToolBox</class>
+   <extends>QWidget</extends>
+   <header>propertytoolbox.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
